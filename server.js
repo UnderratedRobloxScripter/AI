@@ -6,7 +6,6 @@ const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
 
-// POST to root "/"
 app.post('/', async (req, res) => {
 	const userMessage = req.body.message;
 
@@ -18,7 +17,7 @@ app.post('/', async (req, res) => {
 
 	try {
 		const response = await axios.post(
-			`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.API_KEY}`,
+			`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${process.env.API_KEY}`,
 			{
 				contents: [
 					{
@@ -45,7 +44,6 @@ app.post('/', async (req, res) => {
 	}
 });
 
-// Simple GET route for homepage
 app.get('/', (req, res) => {
 	res.send('🟢 NPC Chat Proxy is Live, gang!');
 });
