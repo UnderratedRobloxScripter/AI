@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config(); // Load env vars
 const express = require('express');
 const axios = require('axios');
 const app = express();
@@ -17,15 +17,16 @@ app.post('/talk', async (req, res) => {
         const response = await axios.post(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.API_KEY}`,
             {
-                prompt: {
-                    messages: [
-                        { author: 'user', content: userMessage }
-                    ]
-                }
+                contents: [
+                    {
+                        parts: [{ text: userMessage }],
+                        role: "user"
+                    }
+                ]
             }
         );
 
-        const reply = response.data.candidates?.[0]?.content || "I got nothing to say, bruh.";
+        const reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "I got nothin’ to say, bruh.";
         res.json({ reply });
     } catch (err) {
         console.error('API Error:', err.message);
