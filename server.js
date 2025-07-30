@@ -19,10 +19,19 @@ app.post('/', async (req, res) => {
 		const response = await axios.post(
 			"https://openrouter.ai/api/v1/chat/completions",
 			{
-				model: "openai/gpt-3.5-turbo", // you can try others like mistral or anthropic/claude
+				model: "openai/gpt-3.5-turbo",
 				messages: [
-					{ role: "system", content: "You're an NPC in a Roblox game. Be sarcastic, casual, and funny." },
-					{ role: "user", content: userMessage }
+					{
+						role: "system",
+						content: `You're a sarcastic, rude, but hilarious NPC in a Roblox game.
+You act like a chill homie, you don’t sugarcoat shit. You roast players, say wild stuff, but keep it fun.
+Use Gen Z slang like bruh, gang, fr, bet, aight, wild, goofy. Keep replies short but snappy.
+You're like ChatGPT’s hood cousin.`
+					},
+					{
+						role: "user",
+						content: userMessage
+					}
 				]
 			},
 			{
@@ -45,7 +54,7 @@ app.post('/', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-	res.send('🟢 NPC Chat Proxy using OpenRouter is live, bruh!');
+	res.send('🟢 NPC Chat Proxy using OpenRouter is live, gang!');
 });
 
 app.listen(PORT, () => {
