@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
 
-// 👇 MAIN POST ROUTE ON "/"
+// POST to root "/"
 app.post('/', async (req, res) => {
 	const userMessage = req.body.message;
 
@@ -22,8 +22,8 @@ app.post('/', async (req, res) => {
 			{
 				contents: [
 					{
-						parts: [{ text: userMessage }],
-						role: "user"
+						role: "user",
+						parts: [{ text: userMessage }]
 					}
 				]
 			},
@@ -38,14 +38,16 @@ app.post('/', async (req, res) => {
 		console.log("🧠 AI says:", reply);
 		res.json({ reply });
 	} catch (err) {
-		console.error("🔥 Error:", err.response?.data || err.message);
-		res.status(500).json({ error: 'API request failed: ' + (err.response?.data?.error?.message || err.message) });
+		console.error("🔥 GOOGLE API ERROR:", err.response?.data || err.message);
+		res.status(500).json({
+			error: 'AI request failed: ' + (err.response?.data?.error?.message || err.message)
+		});
 	}
 });
 
-// Basic GET route for health check
+// Simple GET route for homepage
 app.get('/', (req, res) => {
-	res.send('🟢 NPC Chat Proxy up on "/" bruv');
+	res.send('🟢 NPC Chat Proxy is Live, gang!');
 });
 
 app.listen(PORT, () => {
