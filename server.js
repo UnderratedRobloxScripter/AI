@@ -17,35 +17,35 @@ app.post('/', async (req, res) => {
 
 	try {
 		const response = await axios.post(
-			`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${process.env.API_KEY}`,
+			"https://openrouter.ai/api/v1/chat/completions",
 			{
-				contents: [
-					{
-						role: "user",
-						parts: [{ text: userMessage }]
-					}
+				model: "openai/gpt-3.5-turbo", // you can try others like mistral or anthropic/claude
+				messages: [
+					{ role: "system", content: "You're an NPC in a Roblox game. Be sarcastic, casual, and funny." },
+					{ role: "user", content: userMessage }
 				]
 			},
 			{
 				headers: {
+					"Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
 					"Content-Type": "application/json"
 				}
 			}
 		);
 
-		const reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "I got nothin’ to say, bruh.";
+		const reply = response.data?.choices?.[0]?.message?.content || "I ain't got nothin’ to say, bruh.";
 		console.log("🧠 AI says:", reply);
 		res.json({ reply });
 	} catch (err) {
-		console.error("🔥 GOOGLE API ERROR:", err.response?.data || err.message);
+		console.error("🔥 OPENROUTER ERROR:", err.response?.data || err.message);
 		res.status(500).json({
-			error: 'AI request failed: ' + (err.response?.data?.error?.message || err.message)
+			error: 'OpenRouter request failed: ' + (err.response?.data?.error?.message || err.message)
 		});
 	}
 });
 
 app.get('/', (req, res) => {
-	res.send('🟢 NPC Chat Proxy is Live, gang!');
+	res.send('🟢 NPC Chat Proxy using OpenRouter is live, bruh!');
 });
 
 app.listen(PORT, () => {
